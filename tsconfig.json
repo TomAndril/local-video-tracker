@@ -20,8 +20,10 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
-    "allowJs": true
+    "allowJs": true,
+    "baseUrl": "src"
   },
+  "include": ["src", "components", "hooks", "pages", "assets"],
   "exclude": [
     "test",
     "release",
