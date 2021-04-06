@@ -51,17 +51,16 @@ const Project = () => {
     )
   );
 
-  const progressionCounter = project?.rootFolder.folders.subFolders.reduce(
+  const totalVideos = project?.rootFolder.folders.subFolders.reduce(
     (total, current) => {
-      return {
-        totalLength: total.totalLength + current.videos.length,
-        totalWatched:
-          total.totalWatched +
-          current.videos.flat().reduce((a, b) => (a + b.completed ? 1 : 0), 0),
-      };
+      return total + current.videos.length;
     },
-    { totalLength: 0, totalWatched: 0 }
+    0
   );
+
+  const totalViewed = project?.rootFolder.folders.subFolders
+    .map((elem) => elem.videos.filter((elem) => elem.completed && elem))
+    .flat().length;
 
   return (
     <Container>
@@ -69,8 +68,7 @@ const Project = () => {
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <Title>{project?.title}</Title>
           <CounterBadge>
-            Viewed {progressionCounter?.totalWatched} of{' '}
-            {progressionCounter?.totalLength} Videos
+            Completed {totalViewed} of {totalVideos} Videos
           </CounterBadge>
         </div>
         <IoTrashOutline
