@@ -1,10 +1,16 @@
 import path from 'path';
 import { readdirSync } from 'fs';
 import { v4 as uuid } from 'uuid';
-import { SubFolder } from '../types';
+import { SubFolder, Video } from '../types';
+
+type FinalArray = {
+  subFolders: SubFolder[];
+  videos: Video[];
+  files: string[];
+};
 
 export default function scanFolder(baseFolder: string) {
-  const finalArray = {
+  const finalArray: FinalArray = {
     subFolders: [],
     videos: [],
     files: [],

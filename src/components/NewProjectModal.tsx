@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable promise/always-return */
 import React, { useState } from 'react';
 import styled from 'styled-components';

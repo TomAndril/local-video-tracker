@@ -59,7 +59,7 @@ const Project = () => {
   );
 
   const totalViewed = project?.rootFolder.folders.subFolders
-    .map((elem) => elem.videos.filter((elem) => elem.completed && elem))
+    .map((elem) => elem.videos.filter((video) => video.completed && video))
     .flat().length;
 
   return (
