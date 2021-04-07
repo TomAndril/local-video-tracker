@@ -14,10 +14,8 @@ const Container = styled.div`
   width: 13vw;
   height: 13vw;
   border: 1px solid lightgray;
-  margin-bottom: 10px;
   border-radius: 3px;
   padding: 5px;
-  cursor: pointer;
   box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1);
   transition: 200ms ease-in-out;
   :hover {
@@ -37,23 +35,23 @@ const VideosWatchedContainer = styled.div`
   width: 100%;
 `;
 
-const Folder: React.FC<SubFolder> = (props) => {
-  const dispatch = useDispatch();
+type Props = {
+  element: SubFolder;
+  dragEnabled: boolean;
+};
 
+const Folder: React.FC<Props> = ({ dragEnabled, element }) => {
+  const dispatch = useDispatch();
   const [videosWatched, setVideosWatched] = useState(0);
   const [percentageWatched, setPercentageWatched] = useState(0);
 
-  const handleClick = () => {
-    dispatch(setSelectedSubFolder(props));
-  };
-
   useEffect(() => {
     let counter = 0;
-    props.videos.forEach((elem) => elem.completed && counter++);
-    const percentage = (counter * 100) / props.videos.length;
+    element.videos.forEach((elem) => elem.completed && counter++);
+    const percentage = (counter * 100) / element.videos.length;
     setPercentageWatched(percentage);
     setVideosWatched(counter);
-  }, [props.videos]);
+  }, [element.videos]);
 
   const totalVideosWatchedBackgroundHandler = () => {
     if (percentageWatched <= 33) return colors.RED;
@@ -61,13 +59,22 @@ const Folder: React.FC<SubFolder> = (props) => {
     return colors.GREEN;
   };
 
+  const handleClick = () => {
+    if (!dragEnabled) {
+      dispatch(setSelectedSubFolder(element));
+    }
+  };
+
   return (
-    <Container onClick={handleClick}>
-      <p>{props.folderName.split('/')[1]}</p>
+    <Container
+      style={{ cursor: dragEnabled ? 'all-scroll' : 'pointer' }}
+      onClick={handleClick}
+    >
+      <p>{element.folderName.split('/')[1]}</p>
       <VideosWatchedContainer
         style={{ backgroundColor: totalVideosWatchedBackgroundHandler() }}
       >
-        Viewed: {videosWatched} / {props.videos.length}
+        Viewed: {videosWatched} / {element.videos.length}
       </VideosWatchedContainer>
     </Container>
   );
