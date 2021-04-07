@@ -1,11 +1,27 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/jsx-props-no-spreading */
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { IoTrashOutline } from 'react-icons/io5';
+import { RiDragDropFill } from 'react-icons/ri';
+
+// DRAG AND DROP RELATED
+import {
+  GridContextProvider,
+  GridDropZone,
+  GridItem,
+  swap,
+} from 'react-grid-dnd';
+
 import { RootState } from '../store';
 import { colors } from '../styles/Constants';
-import { deleteProject } from '../store/slices/projectsSlice';
+import {
+  deleteProject,
+  reorganizeProjectFolders,
+} from '../store/slices/projectsSlice';
+
 import Folder from '../components/Folder';
 
 const Container = styled.div`
@@ -18,14 +34,6 @@ const Title = styled.p`
   font-weight: bold;
   letter-spacing: 1.5px;
   margin: 5% 0;
-`;
-
-const FoldersContainer = styled.div`
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  justify-content: space-between;
 `;
 
 const HeaderContainer = styled.div`
@@ -51,6 +59,8 @@ const Project = () => {
     )
   );
 
+  const [isDragEnabled, setIsDragEnabled] = useState(false);
+
   const totalVideos = project?.rootFolder.folders.subFolders.reduce(
     (total, current) => {
       return total + current.videos.length;
@@ -62,6 +72,28 @@ const Project = () => {
     .map((elem) => elem.videos.filter((video) => video.completed && video))
     .flat().length;
 
+  function handleGridChange(
+    _sourceId: any,
+    sourceIndex: number,
+    targetIndex: number,
+    _targetId: any
+  ) {
+    if (project) {
+      const result = swap(
+        project?.rootFolder.folders.subFolders,
+        sourceIndex,
+        targetIndex
+      );
+      dispatch(reorganizeProjectFolders({ newFolders: result, project }));
+    }
+  }
+
+  const dropZoneHeightCalculator = () => {
+    return (
+      project && `${(project?.rootFolder.folders.subFolders.length / 5) * 18}vw`
+    );
+  };
+
   return (
     <Container>
       <HeaderContainer>
@@ -71,17 +103,47 @@ const Project = () => {
             Completed {totalViewed} of {totalVideos} Videos
           </CounterBadge>
         </div>
-        <IoTrashOutline
-          size="1.5em"
-          style={{ cursor: 'pointer' }}
-          onClick={() => project && dispatch(deleteProject(project.id))}
-        />
+        <div
+          style={{
+            width: '10%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            paddingRight: 10,
+          }}
+        >
+          <RiDragDropFill
+            size="1.5em"
+            style={{
+              cursor: 'pointer',
+              color: isDragEnabled ? colors.GREEN : 'black',
+            }}
+            onClick={() => setIsDragEnabled((val) => !val)}
+          />
+          <IoTrashOutline
+            size="1.5em"
+            style={{ cursor: 'pointer' }}
+            onClick={() => project && dispatch(deleteProject(project.id))}
+          />
+        </div>
       </HeaderContainer>
-      <FoldersContainer>
-        {project?.rootFolder.folders.subFolders.map((elem) => (
-          <Folder {...elem} key={elem.id} />
-        ))}
-      </FoldersContainer>
+      <GridContextProvider onChange={handleGridChange}>
+        <GridDropZone
+          disableDrag={!isDragEnabled}
+          boxesPerRow={5}
+          id="folders"
+          rowHeight={190}
+          style={{
+            height: dropZoneHeightCalculator(),
+          }}
+        >
+          {project?.rootFolder.folders.subFolders.map((elem) => (
+            <GridItem key={elem.id}>
+              <Folder element={elem} dragEnabled={isDragEnabled} />
+            </GridItem>
+          ))}
+        </GridDropZone>
+      </GridContextProvider>
     </Container>
   );
 };

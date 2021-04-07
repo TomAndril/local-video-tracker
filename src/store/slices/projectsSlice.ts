@@ -4,6 +4,11 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Project, SubFolder, Video } from '../../types';
 import { ProjectsState } from '../../types/store.types';
 
+type OrganizedFolders = {
+  project: Project;
+  newFolders: SubFolder[];
+};
+
 const initialState: ProjectsState = {
   projects: JSON.parse(localStorage.getItem('projects')!) || [],
   selectedProjectId:
@@ -102,6 +107,21 @@ const projectsSlice = createSlice({
       state.selectedSubFolder = composedSubFolder;
       localStorage.setItem('projects', JSON.stringify(updatedProjects));
     },
+    reorganizeProjectFolders: (
+      state,
+      action: PayloadAction<OrganizedFolders>
+    ) => {
+      const { newFolders, project } = action.payload;
+      const indexToReplace = state.projects.findIndex(
+        (elem) => elem.id === project.id
+      );
+      state.projects[indexToReplace].rootFolder.folders.subFolders = newFolders;
+      const storedProjects: Project[] = JSON.parse(
+        localStorage.getItem('projects')!
+      );
+      storedProjects[indexToReplace].rootFolder.folders.subFolders = newFolders;
+      localStorage.setItem('projects', JSON.stringify(storedProjects));
+    },
   },
 });
 
@@ -113,4 +133,5 @@ export const {
   deleteProject,
   setSelectedSubFolder,
   setVideoCompleted,
+  reorganizeProjectFolders,
 } = projectsSlice.actions;
