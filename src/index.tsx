@@ -1,10 +1,9 @@
+import Main from './pages/Main';
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 
-// ROUTING
-import { MemoryRouter as Router, Switch, Route } from 'react-router-dom';
-import { routes } from './routes';
+// STORE
 import store from './store';
 
 // GLOBAL STYLES
@@ -14,17 +13,7 @@ render(
   <>
     <Provider store={store}>
       <GlobalStyle />
-      <Router>
-        <Switch>
-          {routes.map((elem) => (
-            <Route
-              path={elem.path}
-              component={elem.component}
-              key={elem.path}
-            />
-          ))}
-        </Switch>
-      </Router>
+      <Main />
     </Provider>
   </>,
   document.getElementById('root')
