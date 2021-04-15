@@ -105,7 +105,7 @@ const NewProjectModal: React.FC = () => {
             type: 'info',
             title: 'Local Video Tracker',
             message: 'No videos found',
-            detail: `The selected folder doesn't contain any videos.`,
+            detail: `The selected folder doesn't contain any subfolders with videos.`,
           });
         }
         const id = uuid();

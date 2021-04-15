@@ -25,6 +25,7 @@ const Introduction = styled.p`
   width: 75%;
   margin-top: 2%;
   text-align: center;
+  line-height: 1.5em;
 `;
 
 const List = styled.ul`
