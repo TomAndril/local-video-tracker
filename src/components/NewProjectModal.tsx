@@ -11,6 +11,10 @@ import useFolderSelector from '../hooks/useFolderSelector';
 import { RootState } from '../store';
 import { handleOpenNewProjectModal } from '../store/slices/UISlice';
 import { setSelectedProjectId } from '../store/slices/projectsSlice';
+import folderContainsVideos from '../utils/folderHasVideos';
+import { Dialog } from 'electron';
+
+const { showMessageBox }: Dialog = require('electron').remote.dialog;
 
 const StyledContainer = styled.div`
   position: absolute;
@@ -93,16 +97,23 @@ const NewProjectModal: React.FC = () => {
     if (inputVal.length <= 0) {
       return setError(true);
     }
+
     openDialog()
       .then((res) => {
-        if (res) {
-          const id = uuid();
-          setInputVal('');
-          setError(false);
-          createProject({ title: inputVal, rootFolder: res, id });
-          dispatch(setSelectedProjectId(id));
-          dispatch(handleOpenNewProjectModal(false));
+        if (!folderContainsVideos(res)) {
+          return showMessageBox({
+            type: 'info',
+            title: 'Local Video Tracker',
+            message: 'No videos found',
+            detail: `The selected folder doesn't contain any videos.`,
+          });
         }
+        const id = uuid();
+        createProject({ title: inputVal, rootFolder: res, id });
+        setInputVal('');
+        setError(false);
+        dispatch(setSelectedProjectId(id));
+        dispatch(handleOpenNewProjectModal(false));
       })
       .catch((err) => err);
   };

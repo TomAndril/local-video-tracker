@@ -1,6 +1,13 @@
+/* eslint-disable jsx-a11y/accessible-emoji */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
+
+// ELECTRON RELATED
+import { shell } from 'electron';
+
 import { handleOpenNewProjectModal } from '../store/slices/UISlice';
 import { colors } from '../styles/Constants';
 
@@ -11,6 +18,24 @@ const Container = styled.div`
   height: 100vh;
   margin: 0;
   flex-direction: column;
+`;
+
+const Introduction = styled.p`
+  font-size: 0.875em;
+  width: 75%;
+  margin-top: 2%;
+  text-align: center;
+`;
+
+const List = styled.ul`
+  width: 75%;
+  margin-top: 2%;
+`;
+
+const ListElement = styled.li`
+  font-size: 0.875em;
+  padding-left: 20px;
+  padding-top: 10px;
 `;
 
 const Button = styled.div`
@@ -36,18 +61,47 @@ const Title = styled.h1`
   margin: 0;
 `;
 
+const PersonalInfo = styled.div`
+  position: absolute;
+  right: 10px;
+  bottom: 5px;
+  font-size: 0.875em;
+`;
+
 const NoProjects = () => {
   const dispatch = useDispatch();
+
   return (
     <Container>
-      <Title>Welcome!</Title>
-      <p style={{ width: '70%', textAlign: 'center' }}>
-        This tools lets you follow your local projects, you dont have any
-        projects created yet, start by creating one
-      </p>
+      <Title>Local Video Tracker</Title>
+      <Introduction>
+        This tool allows you to organize your videos contained in folders to
+        keep track of your progression as the videos are viewed. This tool is
+        specially usefull for those who:
+      </Introduction>
+      <List>
+        <ListElement>
+          Has downloaded series, courses or videos and want to know where to
+          continue next.
+        </ListElement>
+        <ListElement>
+          Wants to have a quick idea about how many videos still to be seen
+        </ListElement>
+        <ListElement>Simply wants to organize their video folders</ListElement>
+      </List>
       <Button onClick={() => dispatch(handleOpenNewProjectModal(true))}>
         Create your first project
       </Button>
+      <PersonalInfo>
+        Made with <span role="img">💓</span> By
+        <span
+          onClick={() => shell.openExternal('https://tominasweb.com')}
+          style={{ color: colors.RED, cursor: 'pointer' }}
+        >
+          {' '}
+          Tomas Nasjleti
+        </span>
+      </PersonalInfo>
     </Container>
   );
 };

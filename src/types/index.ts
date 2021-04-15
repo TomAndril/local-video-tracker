@@ -1,13 +1,7 @@
 export type Project = {
   id: string;
   title: string;
-  rootFolder: {
-    absolutePath: string;
-    folders: {
-      files: string[];
-      subFolders: SubFolder[];
-    };
-  };
+  rootFolder: RootFolder;
 };
 
 export type SubFolder = {
@@ -20,4 +14,12 @@ export type Video = {
   name: string;
   completed: boolean;
   id: string;
+};
+
+export type RootFolder = {
+  absolutePath: string;
+  folders: {
+    files: string[];
+    subFolders: SubFolder[];
+  };
 };
