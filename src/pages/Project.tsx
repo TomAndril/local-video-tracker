@@ -1,32 +1,39 @@
+/* eslint-disable import/first */
+/* eslint-disable import/order */
+/* eslint-disable no-console */
+/* eslint-disable promise/always-return */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable radix */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Dialog } from 'electron';
+import { RootState } from '../store';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { IoTrashOutline } from 'react-icons/io5';
 import { RiDragDropFill } from 'react-icons/ri';
-import ProgressBar from '@ramonak/react-progress-bar';
-
 // DRAG AND DROP RELATED
+
 import {
   GridContextProvider,
   GridDropZone,
   GridItem,
   swap,
 } from 'react-grid-dnd';
+import ProgressBar from '@ramonak/react-progress-bar';
 
-import { RootState } from '../store';
+const { showMessageBox }: Dialog = require('electron').remote.dialog;
+
+import Folder from '../components/Folder';
+
 import { colors } from '../styles/Constants';
 import {
   deleteProject,
   reorganizeProjectFolders,
 } from '../store/slices/projectsSlice';
-
-import Folder from '../components/Folder';
 
 const Container = styled.div`
   padding: 2.5%;
@@ -108,6 +115,25 @@ const Project = () => {
     );
   };
 
+  function handleDelete() {
+    if (project) {
+      showMessageBox({
+        type: 'question',
+        buttons: ['Cancel', 'Yes, Delete This Project'],
+        message: `Delete ${project.title}`,
+        detail:
+          'Are you sure you want to delete this project? This action is not reversible',
+        title: 'Local Video Tracker',
+      })
+        .then((res) => {
+          if (res.response === 1) {
+            dispatch(deleteProject(project.id));
+          }
+        })
+        .catch((err) => console.error(err));
+    }
+  }
+
   return (
     <Container>
       <HeaderContainer>
@@ -134,7 +160,7 @@ const Project = () => {
           <IoTrashOutline
             size="1.5em"
             style={{ cursor: 'pointer' }}
-            onClick={() => project && dispatch(deleteProject(project.id))}
+            onClick={handleDelete}
           />
         </div>
       </HeaderContainer>
