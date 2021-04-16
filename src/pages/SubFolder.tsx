@@ -10,8 +10,6 @@ import SidePlaylist from '../components/SidePlaylist';
 import Video from '../components/Video';
 
 const Container = styled.div`
-  padding: 15px;
-  margin-left: 4.5%;
   scroll-behavior: smooth;
   margin-top: 5%;
 `;

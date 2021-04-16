@@ -43,7 +43,7 @@ const PlaylistTitle = styled.div`
   height: 5%;
   display: flex;
   align-items: center;
-  padding: 0 5%;
+  padding: 5px 5%;
   text-align: center;
 `;
 
