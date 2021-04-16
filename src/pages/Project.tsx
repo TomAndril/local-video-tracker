@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { IoTrashOutline } from 'react-icons/io5';
 import { RiDragDropFill } from 'react-icons/ri';
+import { BiRename } from 'react-icons/bi';
 // DRAG AND DROP RELATED
 
 import {
@@ -142,13 +143,20 @@ const Project = () => {
         </div>
         <div
           style={{
-            width: '10%',
+            width: '15%',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
             paddingRight: 10,
           }}
         >
+          <BiRename
+            size="1.5em"
+            style={{
+              cursor: 'pointer',
+              color: 'black',
+            }}
+          />
           <RiDragDropFill
             size="1.5em"
             style={{
