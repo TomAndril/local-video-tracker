@@ -12,20 +12,16 @@ import { colors } from '../styles/Constants';
 
 const NewProjectButton = styled.div`
   padding: 2em 0;
-  background-color: ${colors.LIGHTGREY};
+  background-color: ${colors.GREEN};
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: ${colors.BLUE};
+  color: ${colors.LIGHTGREY};
   text-transform: uppercase;
   font-weight: bold;
   transition: 300ms ease-in-out;
-  :hover {
-    background-color: ${colors.GREEN};
-    color: ${colors.LIGHTGREY};
-  }
 `;
 
 const Container = styled.div`
@@ -44,10 +40,7 @@ const ProjectElement = styled.div`
   color: ${colors.BLUE};
   cursor: pointer;
   border-bottom: 1px solid lightgray;
-  transition: 100ms ease-in-out;
-  :hover {
-    background-color: lightgray;
-  }
+  transition: 100ms ease-in-out;}
 `;
 
 const ProjectsContainer = styled.div`

@@ -26,18 +26,17 @@ const StyledContainer = styled.div`
 `;
 
 const Card = styled.div`
-  background: rgba(255, 255, 255, 0.25);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  padding: 3%;
+  background-color: ${colors.GREEN};
+  padding: 5%;
+  border-radius: 3px;
+  position: relative;
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
 `;
 
 const Title = styled.p`
-  color: ${colors.BLUE};
+  color: ${colors.LIGHTGREY};
   font-weight: bold;
+  font-size: 0.875em;
   letter-spacing: 0.125em;
   text-transform: uppercase;
 `;
@@ -59,8 +58,8 @@ const Input = styled.input`
 
 const CloseBar = styled.div`
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 5px;
+  right: 5px;
   align-items: center;
   justify-content: flex-end;
   display: flex;
@@ -80,6 +79,12 @@ const SelectFolderButton = styled.div`
   justify-content: center;
 `;
 
+const ErrorMessage = styled.p`
+  color: ${colors.LIGHTGREY};
+  position: absolute;
+  top: 165px;
+`;
+
 const NewProjectModal: React.FC = () => {
   const [inputVal, setInputVal] = useState('');
   const [error, setError] = useState(false);
@@ -89,11 +94,25 @@ const NewProjectModal: React.FC = () => {
     (state: RootState) => state.UI.isNewProjectModalOpen
   );
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (error) {
+      setError(false);
+    }
+    setInputVal(e.target.value);
+  };
+
   // CUSTOM HOOKS
   const { openDialog } = useFolderSelector();
   const { createProject } = useProjects();
 
-  const handleClick = () => {
+  // CLOSE MODAL ACTION
+  const handleCloseModal = () => {
+    setError(false);
+    dispatch(handleOpenNewProjectModal(false));
+  };
+
+  // SELECT FOLDER ACTION
+  const handleSelectFolder = () => {
     if (inputVal.length <= 0) {
       return setError(true);
     }
@@ -134,20 +153,22 @@ const NewProjectModal: React.FC = () => {
           <Title>Create A New Project</Title>
           <CloseBar>
             <RiCloseFill
-              color={colors.BLUE}
+              color={colors.LIGHTGREY}
               style={{ cursor: 'pointer' }}
               size="2em"
-              onClick={() => dispatch(handleOpenNewProjectModal(false))}
+              onClick={handleCloseModal}
             />
           </CloseBar>
           <Input
             type="text"
-            placeholder={error ? 'Type a name' : 'Project Name'}
+            placeholder='Project Name'
             value={inputVal}
             autoFocus
-            onChange={(e) => setInputVal(e.target.value)}
+            onChange={(e) => handleChange(e)}
           />
-          <SelectFolderButton onClick={handleClick}>
+          {error && <ErrorMessage>Project must have a name</ErrorMessage>}
+
+          <SelectFolderButton onClick={handleSelectFolder}>
             Select Folder
           </SelectFolderButton>
         </div>
