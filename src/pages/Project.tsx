@@ -1,11 +1,15 @@
+/* eslint-disable no-nested-ternary */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable radix */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { IoTrashOutline } from 'react-icons/io5';
 import { RiDragDropFill } from 'react-icons/ri';
+import ProgressBar from '@ramonak/react-progress-bar';
 
 // DRAG AND DROP RELATED
 import {
@@ -33,7 +37,6 @@ const Title = styled.p`
   font-size: 3em;
   font-weight: bold;
   letter-spacing: 1.5px;
-  margin: 5% 0;
 `;
 
 const HeaderContainer = styled.div`
@@ -42,13 +45,11 @@ const HeaderContainer = styled.div`
   justify-content: space-between;
 `;
 
-const CounterBadge = styled.p`
-  padding: 10px 30px;
-  background-color: ${colors.BLUE};
-  margin-left: 10px;
-  border-radius: 3px;
-  color: ${colors.LIGHTGREY};
-  font-size: 0.75em;
+const ProgressBarContainer = styled.div`
+  margin: 2% 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const Project = () => {
@@ -71,6 +72,19 @@ const Project = () => {
   const totalViewed = project?.rootFolder.folders.subFolders
     .map((elem) => elem.videos.filter((video) => video.completed && video))
     .flat().length;
+
+  const [percentageViewed, setPercentageViewed] = useState(0);
+
+  function calculatePercentage() {
+    if (totalViewed && totalVideos) {
+      return parseInt(((totalViewed * 100) / totalVideos).toFixed(2));
+    }
+    return 0;
+  }
+
+  useEffect(() => {
+    setPercentageViewed(calculatePercentage());
+  }, [project]);
 
   function handleGridChange(
     _sourceId: any,
@@ -99,9 +113,6 @@ const Project = () => {
       <HeaderContainer>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <Title>{project?.title}</Title>
-          <CounterBadge>
-            Completed {totalViewed} of {totalVideos} Videos
-          </CounterBadge>
         </div>
         <div
           style={{
@@ -127,6 +138,22 @@ const Project = () => {
           />
         </div>
       </HeaderContainer>
+      <ProgressBarContainer>
+        <ProgressBar
+          completed={percentageViewed}
+          bgColor={
+            percentageViewed <= 33
+              ? colors.RED
+              : percentageViewed > 33 && percentageViewed <= 66
+              ? colors.YELLOW
+              : colors.GREEN
+          }
+          padding="5px"
+          width="74vw"
+          labelColor="black"
+          labelAlignment="center"
+        />
+      </ProgressBarContainer>
       <GridContextProvider onChange={handleGridChange}>
         <GridDropZone
           disableDrag={!isDragEnabled}
