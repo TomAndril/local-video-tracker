@@ -8,6 +8,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/jsx-props-no-spreading */
+
 import React, { useEffect, useState } from 'react';
 import { Dialog } from 'electron';
 import { RootState } from '../store';
@@ -35,6 +36,7 @@ import {
   deleteProject,
   reorganizeProjectFolders,
 } from '../store/slices/projectsSlice';
+import { handleOpenRenameProjectModal } from '../store/slices/UISlice';
 
 const Container = styled.div`
   padding: 2.5%;
@@ -110,6 +112,12 @@ const Project = () => {
     }
   }
 
+  const handleRenameProject = () => {
+    if (project) {
+      dispatch(handleOpenRenameProjectModal(true));
+    }
+  };
+
   const dropZoneHeightCalculator = () => {
     return (
       project && `${(project?.rootFolder.folders.subFolders.length / 5) * 18}vw`
@@ -156,6 +164,7 @@ const Project = () => {
               cursor: 'pointer',
               color: 'black',
             }}
+            onClick={handleRenameProject}
           />
           <RiDragDropFill
             size="1.5em"
