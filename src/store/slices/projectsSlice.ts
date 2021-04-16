@@ -9,6 +9,11 @@ type OrganizedFolders = {
   newFolders: SubFolder[];
 };
 
+type RenameProjectPayloadType = {
+  projectId: string;
+  projectName: string;
+};
+
 const initialState: ProjectsState = {
   projects: JSON.parse(localStorage.getItem('projects')!) || [],
   selectedProjectId:
@@ -122,6 +127,18 @@ const projectsSlice = createSlice({
       storedProjects[indexToReplace].rootFolder.folders.subFolders = newFolders;
       localStorage.setItem('projects', JSON.stringify(storedProjects));
     },
+    renameProject: (state, action: PayloadAction<RenameProjectPayloadType>) => {
+      const { projectId, projectName } = action.payload;
+      const projectToUpdate = state.projects.findIndex(
+        (elem) => elem.id === projectId
+      );
+      const storedProject: Project[] = JSON.parse(
+        localStorage.getItem('projects')!
+      );
+      storedProject[projectToUpdate].title = projectName;
+      localStorage.setItem('projects', JSON.stringify(storedProject));
+      state.projects[projectToUpdate].title = projectName;
+    },
   },
 });
 
@@ -134,4 +151,5 @@ export const {
   setSelectedSubFolder,
   setVideoCompleted,
   reorganizeProjectFolders,
+  renameProject,
 } = projectsSlice.actions;

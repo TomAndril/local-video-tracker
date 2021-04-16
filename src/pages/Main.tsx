@@ -1,6 +1,7 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable no-debugger, no-console */
+import RenameProjectModal from '../components/RenameProjectModal';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import Nav from '../components/Nav';
@@ -39,6 +40,7 @@ const Main: React.FC = () => {
           )}
         </MainContentArea>
         <NewProjectModal />
+        <RenameProjectModal />
       </MainLayoutContainer>
     </>
   );

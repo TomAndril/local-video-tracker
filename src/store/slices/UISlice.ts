@@ -3,6 +3,7 @@ import { UITypes } from '../../types/UI.types';
 
 const initialState: UITypes = {
   isNewProjectModalOpen: false,
+  isRenameProjectModalOpen: false,
 };
 
 const UISlice = createSlice({
@@ -12,9 +13,15 @@ const UISlice = createSlice({
     handleOpenNewProjectModal: (state, action: PayloadAction<boolean>) => {
       state.isNewProjectModalOpen = action.payload;
     },
+    handleOpenRenameProjectModal: (state, action: PayloadAction<boolean>) => {
+      state.isRenameProjectModalOpen = action.payload;
+    },
   },
 });
 
 export default UISlice.reducer;
 
-export const { handleOpenNewProjectModal } = UISlice.actions;
+export const {
+  handleOpenNewProjectModal,
+  handleOpenRenameProjectModal,
+} = UISlice.actions;
