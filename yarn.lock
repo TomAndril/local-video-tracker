@@ -1419,6 +1419,11 @@
     schema-utils "^2.6.5"
     source-map "^0.7.3"
 
+"@ramonak/react-progress-bar@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@ramonak/react-progress-bar/-/react-progress-bar-3.1.0.tgz#da5fefd0668b064a4bb9dead639eb0edf644e757"
+  integrity sha512-jTijspNx6dLwHBZbPZ5n0ZcXn14UrE8TWq6U86iwhIDzU746FK4QtKVCucHAC0QIBah7UBffolY2Lux4U9KtRQ==
+
 "@reduxjs/toolkit@^1.5.0":
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/@reduxjs/toolkit/-/toolkit-1.5.0.tgz#1025c1ccb224d1fc06d8d98a61f6717d57e6d477"
