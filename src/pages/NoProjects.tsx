@@ -26,6 +26,7 @@ const Introduction = styled.p`
   margin-top: 2%;
   text-align: center;
   line-height: 1.5em;
+  color: ${colors.BLACK};
 `;
 
 const List = styled.ul`
@@ -37,12 +38,13 @@ const ListElement = styled.li`
   font-size: 0.875em;
   padding-left: 20px;
   padding-top: 10px;
+  color: ${colors.BLACK};
 `;
 
 const Button = styled.div`
   margin-top: 30px;
   padding: 20px 20px;
-  background-color: ${colors.YELLOW};
+  background-color: ${colors.BLUE};
   border-radius: 5px;
   cursor: pointer;
   color: ${colors.BLUE};
@@ -51,14 +53,11 @@ const Button = styled.div`
   letter-spacing: 1.5px;
   text-transform: uppercase;
   font-size: 0.875em;
-
-  :hover {
-    background-color: ${colors.ORANGE};
-  }
+  color: ${colors.WHITE};
 `;
 
 const Title = styled.h1`
-  color: ${colors.BLUE};
+  color: ${colors.BLACK};
   margin: 0;
 `;
 
@@ -67,6 +66,7 @@ const PersonalInfo = styled.div`
   right: 10px;
   bottom: 5px;
   font-size: 0.875em;
+  color: ${colors.BLACK};
 `;
 
 const NoProjects = () => {
@@ -97,7 +97,7 @@ const NoProjects = () => {
         Made with <span role="img">💓</span> By
         <span
           onClick={() => shell.openExternal('https://tominasweb.com')}
-          style={{ color: colors.RED, cursor: 'pointer' }}
+          style={{ color: colors.BLUE, cursor: 'pointer' }}
         >
           {' '}
           Tomas Nasjleti

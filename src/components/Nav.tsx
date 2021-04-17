@@ -12,13 +12,13 @@ import { colors } from '../styles/Constants';
 
 const NewProjectButton = styled.div`
   padding: 2em 0;
-  background-color: ${colors.GREEN};
+  background-color: ${colors.BLUE};
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: ${colors.LIGHTGREY};
+  color: ${colors.WHITE};
   text-transform: uppercase;
   font-weight: bold;
   transition: 300ms ease-in-out;
@@ -33,14 +33,36 @@ const Container = styled.div`
 
 const ProjectElement = styled.div`
   padding: 1.125em 10px;
-  background-color: ${colors.LIGHTGREY};
+  background-color: ${colors.WHITE};
   font-size: 0.875em;
   align-items: center;
   justify-content: center;
   color: ${colors.BLUE};
   cursor: pointer;
   border-bottom: 1px solid lightgray;
-  transition: 100ms ease-in-out;}
+  transition: 100ms ease-in-out;
+`;
+
+const NoProjects = styled.div`
+  text-align: center;
+  margin-top: 50%;
+  color: ${colors.BLACK};
+  font-size: 1em;
+`;
+
+const ProjectWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const ProjectBadge = styled.div`
+  background-color: ${colors.BLUE};
+  color: ${colors.WHITE};
+  padding: 7px;
+  border-radius: 2px;
+  font-weight: bold;
+  font-size: 0.75em;
 `;
 
 const ProjectsContainer = styled.div`
@@ -53,6 +75,11 @@ const ProjectsContainer = styled.div`
     background-color: ${colors.BLUE};
     border-radius: 3px;
   }
+`;
+
+const ProjectTitle = styled.p`
+  color: ${colors.BLACK};
+  font-size: 1em;
 `;
 
 const Nav = () => {
@@ -74,19 +101,7 @@ const Nav = () => {
   return (
     <Container>
       <ProjectsContainer>
-        {projects.length === 0 && (
-          <p
-            style={{
-              textAlign: 'center',
-              marginTop: '50%',
-              color: colors.BLUE,
-              fontSize: '1.125em',
-              textDecoration: 'underline',
-            }}
-          >
-            No Projects Yet
-          </p>
-        )}
+        {projects.length === 0 && <NoProjects>No Projects Yet</NoProjects>}
         {projects.map((elem) => {
           return (
             <ProjectElement
@@ -95,30 +110,16 @@ const Nav = () => {
               style={{
                 backgroundColor:
                   elem.id === selectedProjectId
-                    ? 'lightgray'
+                    ? colors.GREY
                     : colors.LIGHTGREY,
               }}
             >
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                }}
-              >
-                <p>{elem.title}</p>
-                <p
-                  style={{
-                    backgroundColor: colors.ORANGE,
-                    padding: '7px',
-                    borderRadius: '3px',
-                    fontWeight: 'bold',
-                    fontSize: '0.75em',
-                  }}
-                >
+              <ProjectWrapper>
+                <ProjectTitle>{elem.title}</ProjectTitle>
+                <ProjectBadge>
                   {calculateProjectsTotalVideos(elem.id)} Videos
-                </p>
-              </div>
+                </ProjectBadge>
+              </ProjectWrapper>
             </ProjectElement>
           );
         })}

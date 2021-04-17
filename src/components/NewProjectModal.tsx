@@ -26,7 +26,7 @@ const StyledContainer = styled.div`
 `;
 
 const Card = styled.div`
-  background-color: ${colors.GREEN};
+  background-color: ${colors.BLACK};
   padding: 5%;
   border-radius: 3px;
   position: relative;
@@ -49,7 +49,7 @@ const Input = styled.input`
   margin: 30px 0;
   outline: none;
   ::placeholder {
-    color: ${colors.BLUE};
+    color: ${colors.BLACK};
     font-weight: bold;
   }
   padding-left: 5%;
@@ -66,10 +66,10 @@ const CloseBar = styled.div`
 `;
 
 const SelectFolderButton = styled.div`
-  background-color: ${colors.YELLOW};
+  background-color: ${colors.BLUE};
   cursor: pointer;
   border-radius: 5px;
-  color: ${colors.BLUE};
+  color: ${colors.WHITE};
   font-weight: bold;
   text-transform: uppercase;
   width: 100%;

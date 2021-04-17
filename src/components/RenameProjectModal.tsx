@@ -18,9 +18,10 @@ const Container = styled.div`
 
 const Modal = styled.div`
   position: relative;
-  background-color: ${colors.GREEN};
+  background-color: ${colors.BLACK};
   padding: 3%;
   border-radius: 3px;
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
 `;
 
 const Text = styled.p`
@@ -59,7 +60,7 @@ const RenameProjectModal = () => {
   const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
     setError(false);
     if (e.key === 'Enter') {
-      if (inputValue.length <= 1) {
+      if (inputValue.length < 1) {
         setError(true);
         return;
       }

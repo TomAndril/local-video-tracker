@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import styled from 'styled-components';
+import { colors } from '../styles/Constants';
 import { Video as VideoType } from '../types';
 
 const Container = styled.div`
@@ -11,11 +12,19 @@ const Container = styled.div`
   align-items: center;
 `;
 
+const VideoTitle = styled.p`
+  color: ${colors.BLACK};
+  width: 84.5%;
+  margin-bottom: 10px;
+  font-weight: bold;
+  font-size: 1.125em;
+`;
+
 const Video: React.FC<VideoType> = ({ id, name, children }) => {
   return (
     <Container id={id}>
-      <h2>{name}</h2>
-      <div>{children}</div>
+      <VideoTitle>{name}</VideoTitle>
+      {children}
     </Container>
   );
 };
