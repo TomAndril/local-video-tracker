@@ -25,7 +25,7 @@ const Introduction = styled.p`
   width: 75%;
   margin-top: 2%;
   text-align: center;
-  line-height: 1.5em;
+  line-height: 27px;
   color: ${colors.BLACK};
 `;
 
@@ -78,7 +78,7 @@ const NoProjects = () => {
       <Introduction>
         This tool allows you to organize your videos contained in folders to
         keep track of your progression as the videos are viewed. This tool is
-        specially usefull for those who:
+        specially useful for those who:
       </Introduction>
       <List>
         <ListElement>
@@ -86,9 +86,9 @@ const NoProjects = () => {
           continue next.
         </ListElement>
         <ListElement>
-          Wants to have a quick idea about how many videos still to be seen
+          Wants to have a quick idea about how many videos still to be seen.
         </ListElement>
-        <ListElement>Simply wants to organize their video folders</ListElement>
+        <ListElement>Simply wants to organize their video folders.</ListElement>
       </List>
       <Button onClick={() => dispatch(handleOpenNewProjectModal(true))}>
         Create your first project

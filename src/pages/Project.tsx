@@ -57,9 +57,6 @@ const HeaderContainer = styled.div`
 
 const ProgressBarContainer = styled.div`
   margin: 2% 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;
 
 const Project = () => {
@@ -190,9 +187,9 @@ const Project = () => {
         <ProgressBar
           completed={percentageViewed}
           padding="5px"
-          width="74vw"
+          width="73.5vw"
           labelColor={colors.BLACK}
-          labelAlignment="center"
+          labelAlignment="left"
           bgColor={colors.BLUE}
         />
       </ProgressBarContainer>

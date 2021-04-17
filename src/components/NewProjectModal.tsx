@@ -70,8 +70,8 @@ const SelectFolderButton = styled.div`
   cursor: pointer;
   border-radius: 5px;
   color: ${colors.WHITE};
-  font-weight: bold;
-  text-transform: uppercase;
+
+
   width: 100%;
   height: 50px;
   display: flex;
