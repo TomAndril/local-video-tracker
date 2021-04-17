@@ -43,7 +43,7 @@ const Container = styled.div`
 `;
 
 const Title = styled.p`
-  color: ${colors.BLUE};
+  color: ${colors.BLACK};
   font-size: 3em;
   font-weight: bold;
   letter-spacing: 1.5px;
@@ -146,7 +146,12 @@ const Project = () => {
   return (
     <Container>
       <HeaderContainer>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
           <Title>{project?.title}</Title>
         </div>
         <div
@@ -170,7 +175,7 @@ const Project = () => {
             size="1.5em"
             style={{
               cursor: 'pointer',
-              color: isDragEnabled ? colors.GREEN : 'black',
+              color: isDragEnabled ? colors.BLUE : colors.BLACK,
             }}
             onClick={() => setIsDragEnabled((val) => !val)}
           />
@@ -184,17 +189,11 @@ const Project = () => {
       <ProgressBarContainer>
         <ProgressBar
           completed={percentageViewed}
-          bgColor={
-            percentageViewed <= 33
-              ? colors.RED
-              : percentageViewed > 33 && percentageViewed <= 66
-              ? colors.YELLOW
-              : colors.GREEN
-          }
           padding="5px"
           width="74vw"
-          labelColor="black"
+          labelColor={colors.BLACK}
           labelAlignment="center"
+          bgColor={colors.BLUE}
         />
       </ProgressBarContainer>
       <GridContextProvider onChange={handleGridChange}>

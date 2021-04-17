@@ -28,11 +28,12 @@ const VideosWatchedContainer = styled.div`
   bottom: 0;
   right: 0;
   padding: 5% 0;
-  background-color: ${colors.RED};
+  background-color: ${colors.DARKGREY};
   border-radius: 5px 5px 0 0;
-  color: ${colors.LIGHTGREY};
+  color: ${colors.WHITE};
   text-align: center;
   width: 100%;
+  font-size: 0.75em;
 `;
 
 type Props = {
@@ -43,21 +44,12 @@ type Props = {
 const Folder: React.FC<Props> = ({ dragEnabled, element }) => {
   const dispatch = useDispatch();
   const [videosWatched, setVideosWatched] = useState(0);
-  const [percentageWatched, setPercentageWatched] = useState(0);
 
   useEffect(() => {
     let counter = 0;
     element.videos.forEach((elem) => elem.completed && counter++);
-    const percentage = (counter * 100) / element.videos.length;
-    setPercentageWatched(percentage);
     setVideosWatched(counter);
   }, [element.videos]);
-
-  const totalVideosWatchedBackgroundHandler = () => {
-    if (percentageWatched <= 33) return colors.RED;
-    if (percentageWatched > 33 && percentageWatched <= 99) return colors.ORANGE;
-    return colors.GREEN;
-  };
 
   const handleClick = () => {
     if (!dragEnabled) {
@@ -71,9 +63,7 @@ const Folder: React.FC<Props> = ({ dragEnabled, element }) => {
       onClick={handleClick}
     >
       <p>{element.folderName.split('/')[1]}</p>
-      <VideosWatchedContainer
-        style={{ backgroundColor: totalVideosWatchedBackgroundHandler() }}
-      >
+      <VideosWatchedContainer>
         Viewed: {videosWatched} / {element.videos.length}
       </VideosWatchedContainer>
     </Container>

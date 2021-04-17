@@ -10,7 +10,7 @@ const Container = styled.div`
   height: 100vh;
   position: absolute;
   right: 0;
-  background-color: ${colors.LIGHTGREY};
+  background-color: ${colors.WHITE};
   border-left: 1px solid lightgray;
   overflow-y: auto;
   scroll-behavior: smooth;
@@ -37,8 +37,8 @@ const Video = styled.div`
 `;
 
 const PlaylistTitle = styled.div`
-  background-color: ${colors.YELLOW};
-  color: ${colors.BLUE};
+  background-color: ${colors.BLACK};
+  color: ${colors.WHITE};
   font-size: 0.875em;
   height: 5%;
   display: flex;
@@ -59,14 +59,14 @@ const SidePlaylist = () => {
         <a
           href={`#${elem.id}`}
           key={elem.id}
-          style={{ textDecoration: 'none', color: colors.BLUE }}
+          style={{ textDecoration: 'none', color: colors.BLACK }}
         >
           <Video>
             <p>{elem.name}</p>
             {elem.completed ? (
-              <ImCheckboxChecked color={colors.GREEN} />
+              <ImCheckboxChecked color={colors.BLUE} />
             ) : (
-              <ImCheckboxUnchecked color={colors.BLUE} />
+              <ImCheckboxUnchecked color={colors.BLACK} />
             )}
           </Video>
         </a>

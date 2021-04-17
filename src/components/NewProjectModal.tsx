@@ -49,7 +49,7 @@ const Input = styled.input`
   margin: 30px 0;
   outline: none;
   ::placeholder {
-    color: ${colors.BLUE};
+    color: ${colors.BLACK};
     font-weight: bold;
   }
   padding-left: 5%;
