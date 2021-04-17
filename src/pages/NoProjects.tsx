@@ -54,6 +54,9 @@ const Button = styled.div`
   text-transform: uppercase;
   font-size: 0.875em;
   color: ${colors.WHITE};
+  :hover {
+    opacity: 0.75;
+  }
 `;
 
 const Title = styled.h1`

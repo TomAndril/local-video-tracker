@@ -21,7 +21,10 @@ const NewProjectButton = styled.div`
   color: ${colors.WHITE};
   text-transform: uppercase;
   font-weight: bold;
-  transition: 300ms ease-in-out;
+  transition: opacity 300ms ease-in-out;
+  :hover {
+    opacity: 0.75;
+  }
 `;
 
 const Container = styled.div`
