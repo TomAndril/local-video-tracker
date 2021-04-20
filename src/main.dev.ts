@@ -13,6 +13,10 @@ import 'regenerator-runtime/runtime';
 import path from 'path';
 import { app, BrowserWindow, shell, Menu } from 'electron';
 import { autoUpdater } from 'electron-updater';
+import installExtension, {
+  REACT_DEVELOPER_TOOLS,
+  REDUX_DEVTOOLS,
+} from 'electron-devtools-installer';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 
@@ -39,16 +43,19 @@ if (
 }
 
 const installExtensions = async () => {
-  const installer = require('electron-devtools-installer');
   const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
-  const extensions = ['REACT_DEVELOPER_TOOLS'];
+  const extensions = [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS];
 
-  return installer
-    .default(
-      extensions.map((name) => installer[name]),
-      forceDownload
-    )
-    .catch(console.log);
+  // return installer
+  //   .default(
+  //     extensions.map((name) => installer[name]),
+  //     forceDownload
+  //   )
+  //   .catch(console.log);
+  installExtension(extensions, {
+    loadExtensionOptions: { allowFileAccess: true },
+    forceDownload: forceDownload,
+  }).catch(console.log);
 };
 
 const createWindow = async () => {
