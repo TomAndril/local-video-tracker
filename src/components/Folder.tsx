@@ -70,4 +70,4 @@ const Folder: React.FC<Props> = ({ dragEnabled, element }) => {
   );
 };
 
-export default Folder;
+export default React.memo(Folder);

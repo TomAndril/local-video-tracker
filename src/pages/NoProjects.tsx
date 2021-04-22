@@ -110,4 +110,4 @@ const NoProjects = () => {
   );
 };
 
-export default NoProjects;
+export default React.memo(NoProjects);
