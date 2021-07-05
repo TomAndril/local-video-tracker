@@ -1,4 +1,4 @@
-import path from 'path';
+import path, { basename } from 'path';
 import { readdirSync } from 'fs';
 import { v4 as uuid } from 'uuid';
 import { SubFolder, Video } from '../types';
@@ -17,7 +17,13 @@ export default function scanFolder(baseFolder: string) {
   };
   readdirSync(baseFolder, { withFileTypes: true }).forEach((base) => {
     if (base.isFile()) {
-      finalArray.files.push(base.name);
+      if (path.extname(base.name) === '.mp4') {
+        finalArray.videos.push({
+          completed: false,
+          name: base.name,
+          id: uuid(),
+        });
+      }
     }
     if (base.isDirectory()) {
       const newPath = `${baseFolder}/${base.name}`;

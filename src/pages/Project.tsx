@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 /* eslint-disable import/first */
 /* eslint-disable import/order */
 /* eslint-disable no-console */
@@ -37,6 +38,7 @@ import {
   reorganizeProjectFolders,
 } from '../store/slices/projectsSlice';
 import { handleOpenRenameProjectModal } from '../store/slices/UISlice';
+import VideoPlayer from '../components/VideoPlayer';
 
 const Container = styled.div`
   padding: 2.5%;
@@ -59,7 +61,25 @@ const ProgressBarContainer = styled.div`
   margin: 2% 0;
 `;
 
-const Project = () => {
+const RootVideosContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 15px 0;
+`;
+
+const RootVideosDataContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 5px 0;
+`;
+
+type Props = {
+  hasRootVideos?: boolean;
+};
+
+const Project = ({ hasRootVideos }: Props) => {
   const dispatch = useDispatch();
   const project = useSelector((state: RootState) =>
     state.projects.projects.find(
@@ -80,11 +100,20 @@ const Project = () => {
     .map((elem) => elem.videos.filter((video) => video.completed && video))
     .flat().length;
 
+  const rootTotalVideos = project?.rootFolder.folders.videos.length;
+  const rootTotalViewed = project?.rootFolder.folders.videos
+    .filter((elem) => elem.completed)
+    .flat().length;
+
   const [percentageViewed, setPercentageViewed] = useState(0);
 
   function calculatePercentage() {
-    if (totalViewed && totalVideos) {
-      return parseInt(((totalViewed * 100) / totalVideos).toFixed(2));
+    if (!hasRootVideos) {
+      if (totalViewed && totalVideos) {
+        return parseInt(((totalViewed * 100) / totalVideos).toFixed(2));
+      }
+    } else if (rootTotalVideos && rootTotalViewed) {
+      return parseInt(((rootTotalViewed * 100) / rootTotalVideos).toFixed(2));
     }
     return 0;
   }
@@ -153,7 +182,7 @@ const Project = () => {
         </div>
         <div
           style={{
-            width: '15%',
+            width: `${hasRootVideos ? '10%' : '15%'}`,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -168,14 +197,16 @@ const Project = () => {
             }}
             onClick={handleRenameProject}
           />
-          <RiDragDropFill
-            size="1.5em"
-            style={{
-              cursor: 'pointer',
-              color: isDragEnabled ? colors.BLUE : colors.BLACK,
-            }}
-            onClick={() => setIsDragEnabled((val) => !val)}
-          />
+          {!hasRootVideos ? (
+            <RiDragDropFill
+              size="1.5em"
+              style={{
+                cursor: 'pointer',
+                color: isDragEnabled ? colors.BLUE : colors.BLACK,
+              }}
+              onClick={() => setIsDragEnabled((val) => !val)}
+            />
+          ) : null}
           <IoTrashOutline
             size="1.5em"
             style={{ cursor: 'pointer' }}
@@ -193,23 +224,37 @@ const Project = () => {
           bgColor={colors.BLUE}
         />
       </ProgressBarContainer>
-      <GridContextProvider onChange={handleGridChange}>
-        <GridDropZone
-          disableDrag={!isDragEnabled}
-          boxesPerRow={5}
-          id="folders"
-          rowHeight={190}
-          style={{
-            height: dropZoneHeightCalculator(),
-          }}
-        >
-          {project?.rootFolder.folders.subFolders.map((elem) => (
-            <GridItem key={elem.id}>
-              <Folder element={elem} dragEnabled={isDragEnabled} />
-            </GridItem>
-          ))}
-        </GridDropZone>
-      </GridContextProvider>
+      {!hasRootVideos ? (
+        <GridContextProvider onChange={handleGridChange}>
+          <GridDropZone
+            disableDrag={!isDragEnabled}
+            boxesPerRow={5}
+            id="folders"
+            rowHeight={190}
+            style={{
+              height: dropZoneHeightCalculator(),
+            }}
+          >
+            {project?.rootFolder.folders.subFolders.map((elem) => (
+              <GridItem key={elem.id}>
+                <Folder element={elem} dragEnabled={isDragEnabled} />
+              </GridItem>
+            ))}
+          </GridDropZone>
+        </GridContextProvider>
+      ) : (
+        project?.rootFolder.folders.videos.map((elem) => (
+          <RootVideosContainer key={elem.id}>
+            <div>
+              <RootVideosDataContainer>
+                <p>{elem.name}</p>
+                {elem.completed ? 'Completed' : 'Not Completed'}
+              </RootVideosDataContainer>
+              <VideoPlayer elem={elem} isRootFolder />
+            </div>
+          </RootVideosContainer>
+        ))
+      )}
     </Container>
   );
 };
