@@ -101,6 +101,11 @@ const Nav = () => {
       }, 0);
   };
 
+  const calculateRootProjectTotalVideos = (id: string) => {
+    const project = projects.filter((elem) => elem.id === id);
+    return project[0].rootFolder.folders.videos.length;
+  };
+
   return (
     <Container>
       <ProjectsContainer>
@@ -120,7 +125,9 @@ const Nav = () => {
               <ProjectWrapper>
                 <ProjectTitle>{elem.title}</ProjectTitle>
                 <ProjectBadge>
-                  {calculateProjectsTotalVideos(elem.id)} Videos
+                  {calculateProjectsTotalVideos(elem.id) ||
+                    calculateRootProjectTotalVideos(elem.id)}{' '}
+                  Videos
                 </ProjectBadge>
               </ProjectWrapper>
             </ProjectElement>

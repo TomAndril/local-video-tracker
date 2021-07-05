@@ -36,6 +36,7 @@ const projectsSlice = createSlice({
             subFolders: action.payload.rootFolder.folders.subFolders.filter(
               (elem) => elem.videos.length > 0
             ),
+            videos: action.payload.rootFolder.folders.videos,
           },
         },
       };
@@ -112,6 +113,22 @@ const projectsSlice = createSlice({
       state.selectedSubFolder = composedSubFolder;
       localStorage.setItem('projects', JSON.stringify(updatedProjects));
     },
+    setRootVideoCompleted: (state, action: PayloadAction<Video>) => {
+      const storage: Project[] = JSON.parse(localStorage.getItem('projects')!);
+      const updatedProjects = storage.map((proj) => {
+        if (proj.id === state.selectedProjectId) {
+          proj.rootFolder.folders.videos.map((video) => {
+            if (video.id === action.payload.id) {
+              video.completed = true;
+            }
+            return video;
+          });
+        }
+        return proj;
+      });
+      state.projects = updatedProjects;
+      localStorage.setItem('projects', JSON.stringify(updatedProjects));
+    },
     reorganizeProjectFolders: (
       state,
       action: PayloadAction<OrganizedFolders>
@@ -152,4 +169,5 @@ export const {
   setVideoCompleted,
   reorganizeProjectFolders,
   renameProject,
+  setRootVideoCompleted,
 } = projectsSlice.actions;

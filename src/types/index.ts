@@ -21,5 +21,6 @@ export type RootFolder = {
   folders: {
     files: string[];
     subFolders: SubFolder[];
+    videos: Video[];
   };
 };

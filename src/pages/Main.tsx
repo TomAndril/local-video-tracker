@@ -22,6 +22,13 @@ const Main: React.FC = () => {
   const selectedSubFolder = useSelector(
     (state: RootState) => state.projects.selectedSubFolder
   );
+  const selectedProjectHasRootVideos = useSelector(
+    (state: RootState) =>
+      state.projects.projects.filter((proj) => proj.id === selectedProjectId)[0]
+        ?.rootFolder.folders.videos.length > 0
+  );
+
+  console.log(selectedProjectHasRootVideos);
 
   return (
     <>
@@ -33,8 +40,10 @@ const Main: React.FC = () => {
           {/* IF THERE IS NO PROJECTS SHOW WELCOME SCREEN, IF THERE IS NO SELECTED SUBFOLDER SHOW PROJECT SCREEN, ELSE SHOW SUBFOLDER SCREEN */}
           {!selectedProjectId ? (
             <NoProjects />
-          ) : !selectedSubFolder ? (
+          ) : !selectedSubFolder && !selectedProjectHasRootVideos ? (
             <Project />
+          ) : selectedProjectHasRootVideos ? (
+            <Project hasRootVideos />
           ) : (
             <SubFolder />
           )}
