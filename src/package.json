@@ -1,7 +1,7 @@
 {
   "name": "local-video-tracker",
   "productName": "local-video-tracker",
-  "version": "0.5.0",
+  "version": "0.7.0",
   "description": "Keep track of your local video files",
   "main": "./main.prod.js",
   "author": {

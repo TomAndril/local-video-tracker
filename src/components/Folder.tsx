@@ -5,12 +5,17 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import getFolderName from '../utils/getFolderName';
 import { setSelectedSubFolder } from '../store/slices/projectsSlice';
 import { colors } from '../styles/Constants';
 import { SubFolder } from '../types';
 
 const Container = styled.div`
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
   width: 13vw;
   height: 13vw;
   border: 1px solid lightgray;
@@ -34,6 +39,12 @@ const VideosWatchedContainer = styled.div`
   text-align: center;
   width: 100%;
   font-size: 0.75em;
+`;
+
+const FolderName = styled.p`
+  letter-spacing: 1px;
+  text-align: center;
+  font-size: 0.875em;
 `;
 
 type Props = {
@@ -62,9 +73,12 @@ const Folder: React.FC<Props> = ({ dragEnabled, element }) => {
       style={{ cursor: dragEnabled ? 'all-scroll' : 'pointer' }}
       onClick={handleClick}
     >
-      <p>{element.folderName.split('/')[1]}</p>
+      <FolderName>{getFolderName(element.folderName)}</FolderName>
       <VideosWatchedContainer>
-        Viewed: {videosWatched} / {element.videos.length}
+        Viewed:{' '}
+        <span style={{ fontWeight: 'bold' }}>
+          {videosWatched} / {element.videos.length}
+        </span>
       </VideosWatchedContainer>
     </Container>
   );

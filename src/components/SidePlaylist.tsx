@@ -4,6 +4,7 @@ import { ImCheckboxUnchecked, ImCheckboxChecked } from 'react-icons/im';
 import styled from 'styled-components';
 import { RootState } from '../store';
 import { colors } from '../styles/Constants';
+import getFolderName from '../utils/getFolderName';
 
 const Container = styled.div`
   width: 20%;
@@ -54,7 +55,9 @@ const SidePlaylist = () => {
 
   return (
     <Container>
-      <PlaylistTitle>{videos?.folderName.split('/')[1]}</PlaylistTitle>
+      <PlaylistTitle>
+        {getFolderName(videos?.folderName || 'No Name')}
+      </PlaylistTitle>
       {videos?.videos.map((elem) => (
         <a
           href={`#${elem.id}`}

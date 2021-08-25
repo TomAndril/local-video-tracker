@@ -28,8 +28,6 @@ const Main: React.FC = () => {
         ?.rootFolder.folders.videos.length > 0
   );
 
-  console.log(selectedProjectHasRootVideos);
-
   return (
     <>
       <MainLayoutContainer>

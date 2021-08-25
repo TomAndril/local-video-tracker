@@ -11,7 +11,7 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
     background: #eff0f3;
-    font-family: workSans;
+    font-family: workSans, sans-serif;
     user-select: none;
     margin: 0;
 	  vertical-align: baseline;
