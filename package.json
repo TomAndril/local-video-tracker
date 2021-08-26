@@ -236,6 +236,7 @@
     "react-icons": "^4.2.0",
     "react-player": "^2.9.0",
     "react-redux": "^7.2.2",
+    "react-tooltip": "^4.2.21",
     "regenerator-runtime": "^0.13.5",
     "source-map-support": "^0.5.19",
     "styled-components": "^5.2.1",

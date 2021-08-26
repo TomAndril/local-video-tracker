@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable react/require-default-props */
 /* eslint-disable import/first */
 /* eslint-disable import/order */
@@ -18,6 +20,7 @@ import styled from 'styled-components';
 import { IoTrashOutline } from 'react-icons/io5';
 import { RiDragDropFill } from 'react-icons/ri';
 import { BiRename } from 'react-icons/bi';
+import { BsList, BsFillGrid3X3GapFill } from 'react-icons/bs';
 // DRAG AND DROP RELATED
 
 import {
@@ -37,8 +40,13 @@ import {
   deleteProject,
   reorganizeProjectFolders,
 } from '../store/slices/projectsSlice';
-import { handleOpenRenameProjectModal } from '../store/slices/UISlice';
+import {
+  handleChangeLayoutType,
+  handleOpenRenameProjectModal,
+} from '../store/slices/UISlice';
 import VideoPlayer from '../components/VideoPlayer';
+import { UITypes } from 'types/UI.types';
+import ReactTooltip from 'react-tooltip';
 
 const Container = styled.div`
   padding: 2.5%;
@@ -75,6 +83,13 @@ const RootVideosDataContainer = styled.div`
   margin: 5px 0;
 `;
 
+const LayoutSwitchContainer = styled.div`
+  margin: 20px 10px 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+`;
+
 type Props = {
   hasRootVideos?: boolean;
 };
@@ -86,6 +101,8 @@ const Project = ({ hasRootVideos }: Props) => {
       (proj) => proj.id === state.projects.selectedProjectId
     )
   );
+
+  const layoutType = useSelector((state: RootState) => state.UI.layoutType);
 
   const [isDragEnabled, setIsDragEnabled] = useState(false);
 
@@ -169,6 +186,10 @@ const Project = ({ hasRootVideos }: Props) => {
     }
   }
 
+  const handleChangeLayout = (event: UITypes['layoutType']) => {
+    dispatch(handleChangeLayoutType(event));
+  };
+
   return (
     <Container>
       <HeaderContainer>
@@ -189,29 +210,55 @@ const Project = ({ hasRootVideos }: Props) => {
             paddingRight: 10,
           }}
         >
-          <BiRename
-            size="1.5em"
-            style={{
-              cursor: 'pointer',
-              color: 'black',
-            }}
-            onClick={handleRenameProject}
-          />
+          <>
+            <div data-for="rename" data-tip>
+              <BiRename
+                size="1.5em"
+                style={{
+                  cursor: 'pointer',
+                  color: 'black',
+                }}
+                onClick={handleRenameProject}
+              />
+              <ReactTooltip id="rename" type="info" effect="solid" place="bottom">
+                <p>Rename Project</p>
+              </ReactTooltip>
+            </div>
+          </>
           {!hasRootVideos ? (
-            <RiDragDropFill
-              size="1.5em"
-              style={{
-                cursor: 'pointer',
-                color: isDragEnabled ? colors.BLUE : colors.BLACK,
-              }}
-              onClick={() => setIsDragEnabled((val) => !val)}
-            />
+            <>
+              <div data-for="drag" data-tip>
+                <RiDragDropFill
+                  size="1.5em"
+                  style={{
+                    cursor: 'pointer',
+                    color: isDragEnabled ? colors.BLUE : colors.BLACK,
+                  }}
+                  onClick={() => setIsDragEnabled((val) => !val)}
+                />
+              </div>
+              <ReactTooltip id="drag" type="info" effect="solid" place="bottom">
+                <p>Drag Folders</p>
+              </ReactTooltip>
+            </>
           ) : null}
-          <IoTrashOutline
-            size="1.5em"
-            style={{ cursor: 'pointer' }}
-            onClick={handleDelete}
-          />
+          <>
+            <div data-for="delete" data-tip>
+              <IoTrashOutline
+                size="1.5em"
+                style={{ cursor: 'pointer' }}
+                onClick={handleDelete}
+              />
+            </div>
+            <ReactTooltip
+              type="warning"
+              place="bottom"
+              id="delete"
+              effect="solid"
+            >
+              <p>Delete Project</p>
+            </ReactTooltip>
+          </>
         </div>
       </HeaderContainer>
       <ProgressBarContainer>
@@ -224,20 +271,39 @@ const Project = ({ hasRootVideos }: Props) => {
           bgColor={colors.BLUE}
         />
       </ProgressBarContainer>
+      <LayoutSwitchContainer>
+        <div
+          onClick={() => handleChangeLayout('list')}
+          style={{ cursor: 'pointer' }}
+        >
+          <BsList size={24} style={{ marginRight: '12px' }} />
+        </div>
+        <div
+          onClick={() => handleChangeLayout('grid')}
+          style={{ cursor: 'pointer' }}
+        >
+          <BsFillGrid3X3GapFill size={18} />
+        </div>
+      </LayoutSwitchContainer>
       {!hasRootVideos ? (
         <GridContextProvider onChange={handleGridChange}>
           <GridDropZone
             disableDrag={!isDragEnabled}
-            boxesPerRow={5}
+            boxesPerRow={layoutType === 'grid' ? 5 : 1}
             id="folders"
-            rowHeight={190}
+            rowHeight={layoutType === 'grid' ? 190 : 65}
             style={{
               height: dropZoneHeightCalculator(),
+              marginBottom: layoutType === 'grid' ? 0 : 50,
             }}
           >
             {project?.rootFolder.folders.subFolders.map((elem) => (
               <GridItem key={elem.id}>
-                <Folder element={elem} dragEnabled={isDragEnabled} />
+                <Folder
+                  element={elem}
+                  dragEnabled={isDragEnabled}
+                  layoutType={layoutType}
+                />
               </GridItem>
             ))}
           </GridDropZone>

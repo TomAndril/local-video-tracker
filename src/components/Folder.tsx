@@ -9,6 +9,7 @@ import getFolderName from '../utils/getFolderName';
 import { setSelectedSubFolder } from '../store/slices/projectsSlice';
 import { colors } from '../styles/Constants';
 import { SubFolder } from '../types';
+import { UITypes } from 'types/UI.types';
 
 const Container = styled.div`
   position: relative;
@@ -26,6 +27,23 @@ const Container = styled.div`
   :hover {
     box-shadow: 0px 0px 50px 0px rgba(0, 0, 0, 0.2);
   }
+`;
+
+const ListContainer = styled.div`
+  background: ${colors.WHITE};
+  border-radius: 5px;
+  padding: 12px;
+  box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1);
+  transition: 200ms ease-in-out;
+  :hover {
+    box-shadow: 0px 0px 50px 0px rgba(0, 0, 0, 0.2);
+  }
+`;
+
+const ListDataContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 const VideosWatchedContainer = styled.div`
@@ -50,9 +68,10 @@ const FolderName = styled.p`
 type Props = {
   element: SubFolder;
   dragEnabled: boolean;
+  layoutType: UITypes['layoutType'];
 };
 
-const Folder: React.FC<Props> = ({ dragEnabled, element }) => {
+const Folder: React.FC<Props> = ({ dragEnabled, element, layoutType }) => {
   const dispatch = useDispatch();
   const [videosWatched, setVideosWatched] = useState(0);
 
@@ -68,19 +87,34 @@ const Folder: React.FC<Props> = ({ dragEnabled, element }) => {
     }
   };
 
+  if (layoutType === 'grid') {
+    return (
+      <Container
+        style={{ cursor: dragEnabled ? 'all-scroll' : 'pointer' }}
+        onClick={handleClick}
+      >
+        <FolderName>{getFolderName(element.folderName)}</FolderName>
+        <VideosWatchedContainer>
+          Viewed:{' '}
+          <span style={{ fontWeight: 'bold' }}>
+            {videosWatched} / {element.videos.length}
+          </span>
+        </VideosWatchedContainer>
+      </Container>
+    );
+  }
   return (
-    <Container
+    <ListContainer
       style={{ cursor: dragEnabled ? 'all-scroll' : 'pointer' }}
       onClick={handleClick}
     >
-      <FolderName>{getFolderName(element.folderName)}</FolderName>
-      <VideosWatchedContainer>
-        Viewed:{' '}
-        <span style={{ fontWeight: 'bold' }}>
-          {videosWatched} / {element.videos.length}
-        </span>
-      </VideosWatchedContainer>
-    </Container>
+      <ListDataContainer>
+        <p>{getFolderName(element.folderName)}</p>
+        <p>
+          Viewed: {videosWatched} / {element.videos.length}
+        </p>
+      </ListDataContainer>
+    </ListContainer>
   );
 };
 
